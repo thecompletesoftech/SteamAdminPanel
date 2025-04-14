@@ -72,7 +72,7 @@ Route::group(['middleware' => ['optimizeImages'], 'prefix' => '/v1/customer', 'n
             Route::post('addQuestion', 'addQuestion');
             Route::post('adventureById', 'adventureById');
             Route::post('listBook', 'listBook');
-            Route::post('livedata', 'livedata');
+            
 
             Route::post('adventureByuserIntrest', 'adventureByuserIntrest');
             Route::post('profileUpdate', 'profileUpdate');

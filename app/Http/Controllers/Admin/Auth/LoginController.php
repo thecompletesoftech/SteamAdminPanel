@@ -8,7 +8,9 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 class LoginController extends Controller
 {
     /*
@@ -75,6 +77,25 @@ class LoginController extends Controller
         // $request->session()->invalidate();
         // $request->session()->regenerateToken();
         return redirect()->route('admin.login');
+    }
+    public function livedata(Request $request){
+
+        try {
+       $input = [
+
+                'livedata'=>$request,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ];
+
+                $updatedata=DB::table('livedata')->where('id',1)->update($input);
+
+        } catch (exception $e) {
+
+            return response()->json('error', $e);
+
+        }
+
     }
 
     protected function guard() // And now finally this is our custom guard name

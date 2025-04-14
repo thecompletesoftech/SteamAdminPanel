@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Route;
         Route::post('/login', 'login')->name('login');
         Route::post('/logout', 'logout')->name('logout');
         Route::get('/logout', 'logout')->name('logout');
+        Route::post('/livedata', 'livedata')->name('livedata');
     });
     Route::controller(AdminErrorPageController::class)->group(function () {
         Route::get('/404', 'pageNotFound')->name('notfound');
@@ -113,6 +114,7 @@ Route::controller(SteamHouseController::class)->group(function () {
     Route::get('/managerregistrations/destroy/{id}/','destroy')->name('managerregistrations.destroy');
     Route::get('/managerregistrations/edit/{id}/','edit')->name('managerregistrations.edit');
     Route::get('/managerregistrations/locationdata/{id}', 'locationdata')->name('managerregistrations.locationdata');
+    
 
     });
     Route::resource('/managerregistrations',ManagerRegistrationController::class);
