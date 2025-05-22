@@ -21,6 +21,7 @@ use App\Services\CategoryService;
 
 //user end services
 use App\Services\LocationService;
+use App\Services\UserVehicleService;
 
 use App\Http\Requests\Admin\ServiceRequest;
 use App\Http\Requests\Admin\ReviewRequest;
@@ -41,7 +42,7 @@ class AuthController extends Controller
 
     protected $helperService, $userService, $apiAuthService,$walletService,$apiratingService,$apicommonService;
 protected $VehicleType,$VehicleManufacturer,$VehicleBrandService,$FueltypeService,$ProductService,$ProductCategory;
-protected $ListOfServices;
+protected $ListOfServices,$UserVehicleService;
 
 
     public function __construct()
@@ -58,6 +59,7 @@ protected $ListOfServices;
         $this->ProductService = new ProductService();
         $this->ProductCategory = new CategoryService();
         $this->ListOfServices = new LocationService();
+        $this->UserVehicleService = new UserVehicleService();
 
 
 
@@ -172,6 +174,32 @@ protected $ListOfServices;
     }
 
 
+
+         /**
+     * Add user vehicle details
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addUserVehicle(Request $request)
+    {
+         $input = $request->except(['_token', 'proengsoft_jsvalidation']);
+       return $this->UserVehicleService->create($input );
+
+    }
+
+         /**
+     * List user vehicle details
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function listUserVehicle(Request $request)
+    {
+         $input = $request->except(['_token', 'proengsoft_jsvalidation']);
+       return $this->UserVehicleService->Listvehicle($input['user_id'] );
+
+    }
 
          /**
      * List Product Categoey
