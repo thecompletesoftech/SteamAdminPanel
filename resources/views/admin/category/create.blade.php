@@ -1,8 +1,9 @@
 @extends('admin.layouts.base')
 @section('content')
-    @include('admin.layouts.components.header',[
-    'title'=> __('messages.create', ['name' => trans_choice('content.category', 1)]),
-    'breadcrumbs'=> Breadcrumbs::render('admin.categories.create')
+
+    @include('admin.layouts.components.header', [
+        'title' => __('messages.create', ['name' => 'Category']),
+        'breadcrumbs' => '',
     ])
 
     <!--begin::Post-->
@@ -12,36 +13,25 @@
             <!--begin::Careers - Apply-->
             <div class="card">
                 <!--begin::Body-->
-                <div class="card-body p-lg-17">
-                    <!--begin::Hero-->
-                    <div class="position-relative mb-17">
-                        <!--begin::Overlay-->
-                        <div class="overlay overlay-show">
-                            <!--begin::Title-->
-                            <h3 class="fs-2qx fw-bolder mb-3 m">{{ __('messages.create', ['name' => 'Category']) }}</h3>
-                            <!--end::Title-->
-                        </div>
-                        <!--end::Overlay-->
-                    </div>
-                    <!--end::-->
+                <div class="card-body">
                     <!--begin::Layout-->
-                    <div class="d-flex flex-column flex-lg-row mb-17">
+                    <div class="d-flex flex-column flex-lg-row">
                         <!--begin::Content-->
                         <div class="flex-lg-row-fluid me-0 me-lg-20">
-
                             <!--begin::Form-->
-                            {!! Form::open(['route' => 'categories.store', 'method' => 'POST', 'class' => 'form mb-15', 'enctype' => 'multipart/form-data']) !!}
+
+                            {!! Form::open(['route' => 'admin.category.store', 'method' => 'POST', 'class' => 'form', 'enctype' => 'multipart/form-data']) !!}
 
                             @include('admin.category.form')
-                            <!--begin::Submit-->
-                            <button type="submit" class="btn btn-primary">{{ __('content.create_title') }}</button>
-                            <!-- end::Submit -->
-                            <!-- begin::Back  -->
-                            <button type="button" class="btn btn-primary">
-                                <a href="{{ route('categories.index') }}"
-                                    class="text-white">{{ __('content.back_title') }}</a>
-                            </button>
-                            <!-- end::Back  -->
+
+                            <!--begin::Actions-->
+                            <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                <a href="{{ route('admin.category.index') }}"
+                                    class="btn btn-light btn-active-light-primary me-2 text-black">{{ __('content.back_title') }}</a>
+                                <button type="submit" class="btn btn-primary">{{ __('content.create_title') }}</button>
+                            </div>
+                            <!--end::Actions-->
+
                             {!! Form::close() !!}
                             <!--end::Form-->
                         </div>

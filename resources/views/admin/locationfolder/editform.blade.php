@@ -8,20 +8,21 @@
         <label class="col-lg-2 col-form-label required fw-bold fs-6">{{ trans_choice('content.location', 1) }}</label>
 
         <div class="col-lg-4 fv-row">
-                {!! Form::text('location', null, ['min' => 2, 'max' => 6, 'value' => 2, 'class' => 'form-control form-control-lg form-control-solid', 'placeholder' => trans_choice('content.location', 1)]) !!}
+                {!! Form::text('service_name', null, ['min' => 2, 'max' => 6, 'value' => 2, 'class' => 'form-control form-control-lg form-control-solid', 'placeholder' => trans_choice('content.location', 1)]) !!}
         </div>
 
-        <label class="col-lg-2 col-form-label required fw-bold fs-6">{{ trans_choice('content.contact', 1) }}</label>
+            <label class="col-lg-3 col-form-label required fw-bold fs-5">Is - Service Immidate ?</label>
 
-        <div class="col-lg-4 fv-row">
-                {!! Form::text('contact_no', null, ['min' => 2, 'max' => 6, 'value' => 2, 'class' => 'form-control form-control-lg form-control-solid', 'placeholder' => trans_choice('content.contact', 1)]) !!}
+        <div class="col-lg-3 fv-row">
+        <label class="col-form-label  fs-5">Yes</label> {!!Form::radio('immidate', '0', [ 'class' => 'form-control form-control-lg form-control-solid'])!!}
+        &nbsp;&nbsp;&nbsp;<label class="col-form-label  fs-5">No</label>{!!Form::radio('immidate', '1', [ 'class' => 'form-control form-control-lg form-control-solid'])!!}
+                <!-- {!! Form::text('contact_no', null, ['min' => 2, 'max' => 6, 'value' => 2, 'class' => 'form-control form-control-lg form-control-solid', 'placeholder' => trans_choice('content.contact', 1)]) !!} -->
         </div>
+
 
 
 
     </div>
-
-
 
 
 

@@ -79,11 +79,44 @@ class LoginController extends Controller
         return redirect()->route('admin.login');
     }
     public function livedata(Request $request){
-
+//  echo $request->getContent();die;
+$employees = DB::connection('sqlsrv_secondary')
+->select('
+SELECT 
+    MeterID,
+    LocationName,
+    CompanyName,
+    LastReadingTime,
+    Totalizer,
+    Flow 
+FROM (
+    SELECT 
+        r.MeterID,
+        u.LocationName,
+        u.CompanyName,
+        r.LastReadingTime,
+        r.Totalizer,
+        r.Flow,
+        ROW_NUMBER() OVER (
+            PARTITION BY u.CompanyName 
+            ORDER BY r.CreatedDate DESC
+        ) AS row_num
+    FROM 
+        tbl_User_Mst u
+    INNER JOIN 
+        tbl_Meter_Reading_Mst r ON u.ID = r.MeterID
+    WHERE 
+        r.CreatedDate >= DATEADD(SECOND, -2, GETDATE())
+) AS subquery
+WHERE  
+    row_num = 1
+ORDER BY 
+    MeterID ASC');
+echo $employees;die;
         try {
        $input = [
 
-                'livedata'=>$request,
+                'livedata'=>$employees,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ];

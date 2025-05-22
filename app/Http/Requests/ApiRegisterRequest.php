@@ -15,11 +15,14 @@ class ApiRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|max:150|unique:users,username',
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            // 'username' => 'required|max:150|unique:users,username',
+            // 'name' => 'required',
+            // 'email' => 'required|email|unique:users,email',
             'phone' => 'required|numeric|min:9|unique:users,phone',
-            'password' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'role' => 'required|in:0,1',
+            // 'password' => 'required',
 
 
 
@@ -39,16 +42,19 @@ class ApiRegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'username.required' => __('validation.required', ['attribute' => 'Username']),
-            'name.required' => __('validation.required', ['attribute' => 'First Name']),
+            // 'username.required' => __('validation.required', ['attribute' => 'Username']),
+            // 'name.required' => __('validation.required', ['attribute' => 'First Name']),
             'phone.required' => __('validation.required', ['attribute' => 'Phone']),
-            'email.required' => __('validation.required', ['attribute' => 'Email']),
-            'email.email' => __('validation.email', ['attribute' => 'Email']),
-            'email.unique' => __('validation.unique', ['attribute' => 'Email']),
-            'password.required' => __('validation.required', ['attribute' => 'Password']),
+            'latitude.required' => "Please Enable Your Location",
+            'longitude.required' => "Please Enable Your Location",
+            'role.required' => "Please Provide User Role",
+            // 'email.required' => __('validation.required', ['attribute' => 'Email']),
+            // 'email.email' => __('validation.email', ['attribute' => 'Email']),
+            // 'email.unique' => __('validation.unique', ['attribute' => 'Email']),
+            // 'password.required' => __('validation.required', ['attribute' => 'Password']),
 
 
-            'password.strong_password' => __('validation.strong_password', ['attribute' => 'Password']),
+            // 'password.strong_password' => __('validation.strong_password', ['attribute' => 'Password']),
 
         ];
     }

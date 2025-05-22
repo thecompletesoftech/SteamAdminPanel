@@ -29,14 +29,25 @@ Route::group(['middleware' => ['optimizeImages'], 'prefix' => '/v1/customer', 'n
     // -------- Register And Login API ----------
     Route::controller(AuthController::class)->group(function () {
         Route::post('login', 'login');
+        // Route::get('managerCompany', 'managerCompany');
+        // Route::get('livedata', 'livedata'); 
         Route::post('userRegister', 'userRegister');
-        Route::post('UserList', 'UserList');
-        Route::post('userUpdate/{id}', 'userUpdate');
-        Route::post('allUserintrest', 'allUserintrest');
+        // Route::post('UserList', 'UserList');
+        // Route::post('userUpdate/{id}', 'userUpdate');
+        // Route::post('allUserintrest', 'allUserintrest');
         Route::post('sendOtp', 'sendOtp');
         Route::post('verifyOtp', 'verifyOtp');
         Route::post('contactUs', 'contactUs');
         Route::post('forgetPassword', 'forgetPassword');
+       
+
+
+
+
+
+
+
+
 
          // steam house(home)
          Route::post('steamhouses', 'steamhouseslist');
@@ -64,6 +75,33 @@ Route::group(['middleware' => ['optimizeImages'], 'prefix' => '/v1/customer', 'n
     Route::group(['middleware' => ['jwt.auth']], function () {
         /* logout APi */
         Route::controller(AuthController::class)->group(function () {
+
+
+
+
+ //list all vehicle type like car bike
+        Route::post('VehicleType', 'VehicleType');
+       
+        //list all vehicle Menufacturer
+        Route::post('VehicleManufacturer', 'VehicleManufacturer');
+       
+        //list all vehicle Menufacturer
+        Route::post('VehicleBrandService', 'VehicleBrandService');
+       
+        //list all vehicle Menufacturer
+        Route::post('FueltypeService', 'FueltypeService');
+       
+        //list all getServicesSubData where user select on immidate assistance screen on map
+        Route::post('getServicesSubData', 'getServicesSubData');
+       
+        //list all vehicle Menufacturer
+        Route::post('ProductCategory', 'ProductCategory');
+        //list all vehicle Menufacturer
+        Route::post('ProductAdd', 'ProductAdd');
+
+
+
+
 
             Route::post('addRating', 'addRating');
             Route::post('listavdRating', 'listavdRating');

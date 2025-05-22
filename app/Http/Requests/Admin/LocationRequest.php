@@ -14,24 +14,19 @@ class LocationRequest extends FormRequest
 
     public function rules()
     {
-        if (!request()->is('admin/steamhousefolder/create')) {
+   
             return [
-                'location' => 'required',
-                'contact_no'=>'numeric|digits:10',
+                'service_name' => 'required',
+                'immidate'=>'required',
             ];
-        } else {
-            return [
-                'location' => 'required',
-                'contact_no'=>'numeric|digits:10',
-            ];
-        }
+   
     }
 
     public function messages()
     {
         return [
-            'location.required' => __('validation.required', ['attribute' => 'location']),
-            'contact_no.required' => __('validation.required', ['attribute' => 'Contact']),
+            'service_name.required' => "Please Enter Services Name",
+            'immidate.required' => "Is Immedate Service ? Select One Of Theam ",
 
         ];
     }

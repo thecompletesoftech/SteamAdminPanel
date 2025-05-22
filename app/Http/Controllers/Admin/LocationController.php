@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LocationRequest;
 use Illuminate\Support\Facades\DB;
 use App\Models\LocationModel;
+use App\Models\Services;
 use App\Services\LocationService;
 use App\Services\FileService;
 use App\Services\ManagerLanguageService;
 use App\Services\UtilityService;
+use Aws\Api\Service;
 // use App\Services\UserIntrestService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -80,27 +82,30 @@ class LocationController extends Controller
 
     public function store(LocationRequest $request)
     {
+           
         $input = $request->except(['_token', 'proengsoft_jsvalidation']);
-
+        
         $battle = $this->location->create($input);
         return redirect()->route($this->index_route_name)->with('success',
-        $this->mls->messageLanguage('created', 'steam house add', 1));
+        $this->mls->messageLanguage('created', 'Services Has Been Added', 1));
+
     }
 
 
-    public function show(LocationModel $location)
+    public function show(Services $location)
     {
         return view($this->detail_view,compact('location'));
     }
 
 
-    public function edit(LocationModel $location)
+    public function edit($id)
     {
+        echo $location = $this->location->getById($id);
         return view($this->edit_view,compact('location'));
     }
 
 
-    public function update(LocationRequest $request, LocationModel $location)
+    public function update(LocationRequest $request, Services $location)
     {
         $input = $request->except(['_method', '_token', 'proengsoft_jsvalidation']);
 
@@ -115,6 +120,14 @@ class LocationController extends Controller
     {
 
         $result=LocationService::deleteLocation($id);
+        return redirect()->back()->withSuccess('Location Delete Successfully!');
+
+    }
+
+    public function status($id,$status)
+    {
+
+        $result=LocationService::updateById(['status'=>$status],$id);
         return redirect()->back()->withSuccess('Location Delete Successfully!');
 
     }

@@ -36,40 +36,13 @@ class AuthService
     public static function login(Request $request)
     {
 
-        $user = User::where('email', $request->username)
-            ->orwhere('phone', $request->username)
-            ->orwhere('username', $request->username)
+        $user = User::where('phone', $request->phone)
             ->first();
 
+
+      
         if (!$user) {
-            return response()->json(
-                [
-                    'status' => false,
-                    'message' => "You don't have an account with us, Please create your account with us and then login.",
-                    'type' => 'unauthorized',
-                ],
-                200
-            );
-        }
-
-        $credentials = $request->only(['password']);
-
-        $credentials['status'] = 0;
-        $credentials['username'] = $user->username;
-        $token = auth('api')->attempt($credentials, ['exp' => Carbon::now()->timestamp]);
-
-        if (!$token) {
-            if ($user->status == 1) {
-
-                return response()->json(
-                    [
-                        'status' => false,
-                        'message' => 'Your account has been deactivated by admin. Please contact to Support Team.',
-                        'type' => 'blocked',
-                    ],
-                    200
-                );
-            } else {
+          
                 return response()->json(
                     [
                         'status' => false,
@@ -78,26 +51,16 @@ class AuthService
                     ],
                     200
                 );
-            }
-        }
-        $user = JWTAuth::setToken($token)->toUser();
-
-        if (!empty($user->profile)) {
-            $user->profile = FileService::image_path($user->profile);
+            
         }
 
         if ($user->status == 0) {
             // UserService::updateLastLogin($user->id, $request);
             if (!empty($request->fcm_token)) {
                 $data = array('fcm_token' => $request->fcm_token);
-
-                $result = DB::table('users')->where('username', $request->username)->update($data);
-
+                $result = DB::table('users')->where('phone', $request->phone)->update($data);
             }
 
-            $location_data = DB::table('users')->select('users.id', 'users.address', 'location.location_id', 'location.contact_no as helpline_no')
-                ->join('location', 'location.location_id', '=', 'users.address')->where('users.id', $user->id)->first();
-            $user['helpline_no'] = $location_data->helpline_no;
             // Artisan::call('livedata:update');
             return response()->json(
                 [
@@ -131,7 +94,7 @@ class AuthService
     {
 
         $is_register = false;
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('phone', $request->phone)->first();
         if ($user) {
             return response()->json(
                 [
@@ -146,39 +109,16 @@ class AuthService
             $input = array_merge(
                 $request->except(['_token']),
                 [
-                    'meter_id' => $request->meter_id,
-                    'manager_id' => $request->manager_id,
-                    'username' => $request->username,
-                    'name' => $request->name,
-                    'email' => $request->email,
                     'phone' => $request->phone,
+                    'username' => $request->phone,
+                    'name' => '',
+                    'email' => '',
                     'latitude' => $request->latitude,
                     'longitude' => $request->longitude,
-                    'address' => $request->address,
-                    'image' => $request->image,
-                    'emo_expert' => $request->emo_expert,
-                    'password' => Hash::make($request->password),
-                    'c_password' => Hash::make($request->c_password),
-                    'about' => $request->about,
                     'role' => $request->role,
-                    'fcm_token' => $request->fcm_token,
-                    'status' => 0,
-
                 ]
             );
-
-            if (!empty($input['image'])) {
-                $image = FileService::ImageUploader($request, 'image', 'employees/image/');
-                $input['image'] = json_encode($image);
-            }
-
-            if (!empty($input['profile'])) {
-                $picture = FileService::imageUploader($request, 'profile', 'profile/image/');
-                $input['profile'] = $picture;
-            }
-
             $user = UserService::create($input);
-
             $token = auth('api')->login($user, ['exp' => Carbon::now()->addDays(120)->timestamp]);
             if (!$token) {
                 return response()->json(
@@ -192,11 +132,6 @@ class AuthService
             }
 
             $user = JWTAuth::setToken($token)->toUser();
-
-            if (!empty($user->profile)) {
-                $user->profile = FileService::image_path($user->profile);
-            }
-
             if ($user->status == 0) {
                 return response()->json(
                     [
@@ -333,7 +268,7 @@ class AuthService
     public static function sendOtp(Request $request)
     {
 
-        $user = ServiceRequestModel::where('phone', $request->phone)->first();
+        $user = User::where('phone', $request->phone)->first();
 
         if ($user) {
             $otp = HelperService::createOtp();
@@ -341,7 +276,7 @@ class AuthService
                 'phone' => $user->phone,
                 'service_request_id' => $user->id,
                 'otp' => $otp,
-                'role' => 0,
+                'role_id' => 0,
             ];
 
             if (env('PRODUCTION', false)) {
@@ -350,18 +285,8 @@ class AuthService
                 MasterOtp::create($input);
 
             }
-            $input1['otp'] = $otp;
-            $data = DB::table('service_request')->where('id', $request->service_request_id)->update($input1);
-
-            $user_service = ServiceRequestModel::where('id', $request->service_request_id)->first();
-
-            $input = [
-                'notification' => 'OTP',
-                'message' => 'Share the OTP with our Engineer' . ' ' . $otp,
-                'user_id' => $user_service->user_id,
-            ];
-
-            NotificationService::create($input);
+            
+            
             // $data = DB::table('customertrack')->where('Service_request_id',$request->Service_request_id)->update($input1);
 
             return response()->json(
@@ -385,6 +310,8 @@ class AuthService
 
         }
     }
+
+
 
 /**
  * Verify Otp
@@ -526,6 +453,18 @@ class AuthService
             );
         }
     }
+
+
+    
+    /**
+     * API For VehicleType
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+public static function VehicleType(){
+    
+}
 
     /**
      * API For Forget Password

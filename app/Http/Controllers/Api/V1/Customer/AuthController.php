@@ -12,6 +12,15 @@ use App\Services\Api\ApiCommonService;
 
 use App\Services\HelperService;
 use App\Services\UserService;
+use App\Services\VehicletypeService;
+use App\Services\VehicleDetailsService;
+use App\Services\VehicleBrandService;
+use App\Services\FueltypeService;
+use App\Services\ProductService;
+use App\Services\CategoryService;
+
+//user end services
+use App\Services\LocationService;
 
 use App\Http\Requests\Admin\ServiceRequest;
 use App\Http\Requests\Admin\ReviewRequest;
@@ -25,11 +34,15 @@ use App\Http\Requests\Admin\CustomerDataRequest;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
 
     protected $helperService, $userService, $apiAuthService,$walletService,$apiratingService,$apicommonService;
+protected $VehicleType,$VehicleManufacturer,$VehicleBrandService,$FueltypeService,$ProductService,$ProductCategory;
+protected $ListOfServices;
+
 
     public function __construct()
     {
@@ -38,6 +51,15 @@ class AuthController extends Controller
         $this->apiratingService = new ApiRatingService();
         $this->apicommonService = new ApiCommonService();
         $this->apiAuthService = new AuthService();
+        $this->VehicleType = new VehicletypeService();
+        $this->VehicleManufacturer = new VehicleDetailsService();
+        $this->VehicleBrandService = new VehicleBrandService();
+        $this->FueltypeService = new FueltypeService();
+        $this->ProductService = new ProductService();
+        $this->ProductCategory = new CategoryService();
+        $this->ListOfServices = new LocationService();
+
+
 
     }
 
@@ -53,6 +75,39 @@ class AuthController extends Controller
         return $this->apiAuthService->login($request);
     }
 
+
+
+     /**
+     * Send Otp
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sendOtp(Request $request)
+    {
+        return $this->apiAuthService->sendOtp($request);
+    }
+
+    /**
+     * Verify Otp
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function verifyOtp(Request $request)
+    {
+        $request->merge(['role' => 'customer']);
+        return $this->apiAuthService->verifyOtp($request);
+    }
+
+
+    public function userUpdate(Request $request,$id)
+    {
+        return $this->apiAuthService->userUpdate($request,$id);
+    }
+
+
+   
     /**
      * Register user.
      *
@@ -64,11 +119,109 @@ class AuthController extends Controller
 
     //    request->merge(['role' => 'Customer']);
         return $this->apiAuthService->userRegister($request);
+
+
     }
-    public function userUpdate(Request $request,$id)
+
+        /**
+     * List Vehicle types
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function VehicleType()
     {
-        return $this->apiAuthService->userUpdate($request,$id);
+
+        return $this->VehicleType->datatable();
     }
+
+       /**
+     *List VehicleManufacturer
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function VehicleManufacturer(Request $request)
+    {
+        $data=['vehicle_type'=>$request->vehicle_type];
+        return $this->VehicleManufacturer->where($data);
+    }
+
+       /**
+     *List VehicleBrand / Modal Name
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function VehicleBrandService(Request $request)
+    {
+        $data=['vehicle_id'=>$request->vehicle_id];
+        return $this->VehicleBrandService->where($data);
+    }
+
+        /**
+     * List Vehicle types
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function FueltypeService()
+    {
+
+        return $this->FueltypeService->datatable();
+    }
+
+
+
+         /**
+     * List Product Categoey
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getServicesSubData()
+    {
+
+        return $this->ListOfServices->getServicesSubData();
+    }
+
+
+
+         /**
+     * List Product Categoey
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function ProductCategory()
+    {
+
+        return $this->ProductCategory->datatable();
+    }
+
+
+
+        /**
+     * List Product Categoey
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function ProductAdd(Request $request)
+    {
+   $input = $request->except(['_token', 'proengsoft_jsvalidation']);
+
+      $image = $request->file('product_image');
+        $filename = time() . $image->getClientOriginalName();
+        $destinationPath = public_path('files/product');
+        $image->move($destinationPath, $filename);
+        $input['product_image'] = 'files/product' . "/" . $filename;
+        $input['uploaded_by'] = 1;
+        
+
+        return $this->ProductService->create($input);
+    }
+
 
 
        /**
@@ -122,31 +275,6 @@ class AuthController extends Controller
 
 
 
-
-
-
-     /**
-     * Send Otp
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function sendOtp(Request $request)
-    {
-        return $this->apiAuthService->sendOtp($request);
-    }
-
-    /**
-     * Verify Otp
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function verifyOtp(Request $request)
-    {
-        $request->merge(['role' => 'customer']);
-        return $this->apiAuthService->verifyOtp($request);
-    }
 
 
     /**
@@ -433,7 +561,7 @@ public function UserList()
 
 
        //list
-       public function livedata()
+       public function managerCompany()
        {
            return $this->apiAuthService->livedata();
        }

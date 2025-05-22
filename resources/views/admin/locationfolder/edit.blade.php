@@ -19,9 +19,9 @@
                         <!--begin::Content-->
                         <div class="flex-lg-row-fluid me-0 me-lg-20">
                             <!--begin::Form-->
-                            {!! Form::model($location, ['method' => 'PATCH', 'route' => ['admin.locations.update', $location->location_id], 'class' => 'form mb-15', 'enctype' => 'multipart/form-data']) !!}
+                            {!! Form::model($location, ['method' => 'PATCH', 'route' => ['admin.locations.update', $location->id], 'class' => 'form mb-15', 'enctype' => 'multipart/form-data']) !!}
                             @csrf
-                            <input type="hidden" name="id" value="{{$location->location_id}}">
+                            <input type="hidden" name="id" value="{{$location->id}}">
                             @include('admin.locationfolder.editform')
                             <!--begin::Actions-->
                             <div class="card-footer d-flex justify-content-end py-6 px-9">

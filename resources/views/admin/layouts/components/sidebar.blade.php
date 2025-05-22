@@ -93,6 +93,87 @@
                                 class="menu-section text-muted text-uppercase fs-8 ls-1">{{ trans_choice('content.sidebar.menu', 2) }}</span>
                         </div>
                     </div>
+                    <div class="menu-item">
+                        <a class="menu-link {{ checkActiveSideBar(['category']) ? 'menu-item active' : '' }}"
+                            href="{{ route('admin.category.index') }}">
+                            <span class="menu-icon">
+                                <!--begin::Svg Icon | path: icons/duotone/General/User.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <i class="fa fa-key " style="color:white;font-size:15px;"></i>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </span>
+                            <span class="menu-title">Product Category</span>
+                        </a>
+                    </div>
+                    
+                     <div class="menu-item">
+                        <a class="menu-link {{ checkActiveSideBar(['fueltype']) ? 'menu-item active' : '' }}"
+                            href="{{ route('admin.fueltype.index') }}">
+                            <span class="menu-icon">
+                                <!--begin::Svg Icon | path: icons/duotone/General/User.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <i class="fa fa-key " style="color:white;font-size:15px;"></i>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </span>
+                            <span class="menu-title">Vehicle Fuel Types</span>
+                        </a>
+                    </div>
+
+                     <div class="menu-item">
+                        <a class="menu-link {{ checkActiveSideBar(['vehicletype']) ? 'menu-item active' : '' }}"
+                            href="{{ route('admin.vehicletype.index') }}">
+                            <span class="menu-icon">
+                                <!--begin::Svg Icon | path: icons/duotone/General/User.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <i class="fa fa-key " style="color:white;font-size:15px;"></i>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </span>
+                            <span class="menu-title">Vehicle  Types</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a class="menu-link {{ checkActiveSideBar(['VehicleDetails']) ? 'menu-item active' : '' }}"
+                            href="{{ route('admin.vehicle.index') }}">
+                            <span class="menu-icon">
+                                <!--begin::Svg Icon | path: icons/duotone/General/User.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <i class="fa fa-key " style="color:white;font-size:15px;"></i>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </span>
+                            <span class="menu-title">Vehicle Manufacturer</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a class="menu-link {{ checkActiveSideBar(['vehiclebrand']) ? 'menu-item active' : '' }}"
+                            href="{{ route('admin.vehiclebrand.index') }}">
+                            <span class="menu-icon">
+                                <!--begin::Svg Icon | path: icons/duotone/General/User.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <i class="fa fa-key " style="color:white;font-size:15px;"></i>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </span>
+                            <span class="menu-title">Vehicle Brand</span>
+                        </a>
+                    </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link {{ checkActiveSideBar(['product']) ? 'menu-item active' : '' }}"
+                            href="{{ route('admin.product.index') }}">
+                            <span class="menu-icon">
+                                <!--begin::Svg Icon | path: icons/duotone/General/User.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <i class="fa fa-key " style="color:white;font-size:15px;"></i>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </span>
+                            <span class="menu-title">Manage Product </span>
+                        </a>
+                    </div>
 
 
 
@@ -106,9 +187,25 @@
                                 </span>
                                 <!--end::Svg Icon-->
                             </span>
-                            <span class="menu-title">Add Location</span>
+                            <span class="menu-title">Services</span>
                         </a>
                     </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link {{ checkActiveSideBar(['location']) ? 'menu-item active' : '' }}"
+                            href="{{ route('admin.subservices.index') }}">
+                            <span class="menu-icon">
+                                <!--begin::Svg Icon | path: icons/duotone/General/User.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <i class="fa fa-key " style="color:white;font-size:15px;"></i>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </span>
+                            <span class="menu-title">Sub-Services</span>
+                        </a>
+                    </div>
+
+
 
                     <div class="menu-item">
                         <a class="menu-link {{ checkActiveSideBar(['managerregistration']) ? 'menu-item active' : '' }}"

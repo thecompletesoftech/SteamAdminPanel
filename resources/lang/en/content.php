@@ -376,7 +376,8 @@ return [
 
     // Company list & Location
      'company_name' => 'Company',
-     'location' => 'Location',
+     'location' => 'Services',
+     'isImmidate' => 'Is-Immediate',
      'contact' => 'Helpline No',
      'company_list' => 'Company List',
      'company_username' => 'Company Username',

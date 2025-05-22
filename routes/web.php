@@ -90,12 +90,76 @@ Route::controller(SteamHouseController::class)->group(function () {
 
     // Map Location
 
+    Route::controller(CategoryController::class)->group(function () {
+    Route::get('/category/status/{id}/{status}','status')->name('category.status');
+    Route::get('/category/destroy/{id}/','destroy')->name('category.destroy');
+    Route::get('/category/edit/{id}/','edit')->name('category.edit');
+    });
+    Route::resource('/category',CategoryController::class);
+
+    // Map Location
+
     Route::controller(LocationController::class)->group(function () {
     Route::get('/locations/status/{id}/{status}','status')->name('locations.status');
     Route::get('/locations/destroy/{id}/','destroy')->name('locations.destroy');
+    Route::get('/locations/edit/{id}/','edit')->name('locations.edit');
     });
     Route::resource('/locations',LocationController::class);
 
+    // Sub Services
+
+    Route::controller(SubServices::class)->group(function () {
+    Route::get('/subservices/status/{id}/{status}','status')->name('subservices.status');
+    Route::get('/subservices/destroy/{id}/','destroy')->name('subservices.destroy');
+    Route::get('/subservices/edit/{id}/','edit')->name('subservices.edit');
+    });
+    Route::resource('/subservices',SubServices::class);
+
+    //product manage
+
+    Route::controller(Product::class)->group(function () {
+    Route::get('/product/status/{id}/{status}','status')->name('product.status');
+    Route::get('/product/destroy/{id}/','destroy')->name('product.destroy');
+    Route::get('/product/edit/{id}/','edit')->name('product.edit');
+    });
+    Route::resource('/product',Product::class);
+
+    //vehicle manufacturer like maruti tata manage
+
+    Route::controller(VehicleDetails::class)->group(function () {
+    Route::get('/vehicle/status/{id}/{status}','status')->name('vehicle.status');
+    Route::get('/vehicle/destroy/{id}/','destroy')->name('vehicle.destroy');
+    Route::get('/vehicle/edit/{id}/','edit')->name('vehicle.edit');
+    });
+    Route::resource('/vehicle',VehicleDetails::class);
+
+    //vehicle brand manage 
+
+    Route::controller(VehicleBrandController::class)->group(function () {
+    Route::get('/vehiclebrand/status/{id}/{status}','status')->name('vehiclebrand.status');
+    Route::get('/vehiclebrand/destroy/{id}/','destroy')->name('vehiclebrand.destroy');
+    Route::get('/vehiclebrand/edit/{id}/','edit')->name('vehiclebrand.edit');
+    });
+    Route::resource('/vehiclebrand',VehicleBrandController::class);
+
+//fuel Type
+    
+    Route::controller(FuelTypeController::class)->group(function () {
+    Route::get('/fueltype/status/{id}/{status}','status')->name('fueltype.status');
+    Route::get('/fueltype/destroy/{id}/','destroy')->name('fueltype.destroy');
+    Route::get('/fueltype/edit/{id}/','edit')->name('fueltype.edit');
+    });
+    Route::resource('/fueltype',FuelTypeController::class);
+    // Coompany List
+
+//VehicleTypeController Type
+    
+    Route::controller(VehicleTypeController::class)->group(function () {
+    Route::get('/vehicletype/status/{id}/{status}','status')->name('vehicletype.status');
+    Route::get('/vehicletype/destroy/{id}/','destroy')->name('vehicletype.destroy');
+    Route::get('/vehicletype/edit/{id}/','edit')->name('vehicletype.edit');
+    });
+    Route::resource('/vehicletype',VehicleTypeController::class);
     // Coompany List
 
     Route::controller(CompanyListController::class)->group(function () {

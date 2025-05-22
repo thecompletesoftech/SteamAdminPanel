@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\LocationModel;
+use App\Models\Services;
 use Illuminate\Support\Facades\DB;
 
 class LocationService
@@ -10,11 +10,11 @@ class LocationService
 
     public static function create(array $data)
     {
-        $data = LocationModel::create($data);
+        $data = Services::create($data);
         return $data;
     }
 
-    public static function update(array $data,LocationModel $location)
+    public static function update(array $data,Services $location)
     {
         $data = $location->update($data);
         return $data;
@@ -22,27 +22,25 @@ class LocationService
 
     public static function updateById(array $data, $id)
     {
-        $data = LocationModel::whereId($id)->update($data);
+        $data = Services::whereId($id)->update($data);
         return $data;
     }
 
     public static function getById($id)
     {
-        $data = LocationModel::find($id);
+        $data = Services::find($id);
         return $data;
     }
 
-    public static function delete(LocationModel $location)
+    public static function delete(Services $location)
     {
         $data = $location->delete();
         return $data;
     }
 
     public static function deleteLocation($id){
-        $result=DB::table('location')->where('location_id',$id)->delete();
-        $result1=DB::table('users')->where('address',$id)->delete();
-        $result2=DB::table('service_request')->where('address',$id)->delete();
-        return $result.$result1.$result2;
+        $result=DB::table('services')->where('id',$id)->delete();
+        return $result;
     }
 
 
@@ -50,14 +48,35 @@ class LocationService
 
     public static function deleteById($id)
     {
-        $data = LocationModel::whereId($id)->delete();
+        $data = Services::whereId($id)->delete();
+        return $data;
+    }
+    public static function where($data)
+    {
+        $data = Services::where($data)->get();
         return $data;
     }
 
     public static function datatable()
     {
-        $data = DB::table('location')->orderBy('created_at', 'asc')->paginate(10);
+        $data = DB::table('services')->orderBy('created_at', 'asc')->paginate(10);
         return $data;
     }
+
+    
+
+    public static function getServicesSubData()
+    {
+        $data = Services::get();
+
+        foreach($data as $d){
+            $d->label=DB::table('sub_services')->select('sub_service_name','sub_id')->where('id',$d->id)->first();
+            $d->option=DB::table('sub_category_data')->where('sub_services_id',$d->label->sub_id)->get();
+        }
+        return $data;
+        
+    }
+
+
 
 }
