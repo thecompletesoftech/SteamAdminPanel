@@ -98,6 +98,8 @@ Route::group(['middleware' => ['optimizeImages'], 'prefix' => '/v1/customer', 'n
         Route::post('ProductCategory', 'ProductCategory');
         //list all vehicle Menufacturer
         Route::post('ProductAdd', 'ProductAdd');
+        //list all product by categoryId Menufacturer
+        Route::post('listProduct', 'listProduct');
         //Add user vehicle details 
         Route::post('addUserVehicle', 'addUserVehicle');
         //List user vehicle details 

@@ -40,9 +40,9 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
 
-    protected $helperService, $userService, $apiAuthService,$walletService,$apiratingService,$apicommonService;
-protected $VehicleType,$VehicleManufacturer,$VehicleBrandService,$FueltypeService,$ProductService,$ProductCategory;
-protected $ListOfServices,$UserVehicleService;
+    protected $helperService, $userService, $apiAuthService, $walletService, $apiratingService, $apicommonService;
+    protected $VehicleType, $VehicleManufacturer, $VehicleBrandService, $FueltypeService, $ProductService, $ProductCategory;
+    protected $ListOfServices, $UserVehicleService;
 
 
     public function __construct()
@@ -60,9 +60,6 @@ protected $ListOfServices,$UserVehicleService;
         $this->ProductCategory = new CategoryService();
         $this->ListOfServices = new LocationService();
         $this->UserVehicleService = new UserVehicleService();
-
-
-
     }
 
     /**
@@ -73,13 +70,13 @@ protected $ListOfServices,$UserVehicleService;
      */
     public function login(ApiLoginRequest $request)
     {
-      
+
         return $this->apiAuthService->login($request);
     }
 
 
 
-     /**
+    /**
      * Send Otp
      *
      * @param  \Illuminate\Http\Request  $request
@@ -103,13 +100,13 @@ protected $ListOfServices,$UserVehicleService;
     }
 
 
-    public function userUpdate(Request $request,$id)
+    public function userUpdate(Request $request, $id)
     {
-        return $this->apiAuthService->userUpdate($request,$id);
+        return $this->apiAuthService->userUpdate($request, $id);
     }
 
 
-   
+
     /**
      * Register user.
      *
@@ -119,13 +116,11 @@ protected $ListOfServices,$UserVehicleService;
     public function userRegister(ApiRegisterRequest $request)
     {
 
-    //    request->merge(['role' => 'Customer']);
+        //    request->merge(['role' => 'Customer']);
         return $this->apiAuthService->userRegister($request);
-
-
     }
 
-        /**
+    /**
      * List Vehicle types
      *
      * @param  \Illuminate\Http\Request  $request
@@ -137,7 +132,7 @@ protected $ListOfServices,$UserVehicleService;
         return $this->VehicleType->datatable();
     }
 
-       /**
+    /**
      *List VehicleManufacturer
      *
      * @param  \Illuminate\Http\Request  $request
@@ -145,11 +140,11 @@ protected $ListOfServices,$UserVehicleService;
      */
     public function VehicleManufacturer(Request $request)
     {
-        $data=['vehicle_type'=>$request->vehicle_type];
+        $data = ['vehicle_type' => $request->vehicle_type];
         return $this->VehicleManufacturer->where($data);
     }
 
-       /**
+    /**
      *List VehicleBrand / Modal Name
      *
      * @param  \Illuminate\Http\Request  $request
@@ -157,11 +152,11 @@ protected $ListOfServices,$UserVehicleService;
      */
     public function VehicleBrandService(Request $request)
     {
-        $data=['vehicle_id'=>$request->vehicle_id];
+        $data = ['vehicle_id' => $request->vehicle_id];
         return $this->VehicleBrandService->where($data);
     }
 
-        /**
+    /**
      * List Vehicle types
      *
      * @param  \Illuminate\Http\Request  $request
@@ -175,7 +170,7 @@ protected $ListOfServices,$UserVehicleService;
 
 
 
-         /**
+    /**
      * Add user vehicle details
      *
      * @param  \Illuminate\Http\Request  $request
@@ -183,12 +178,11 @@ protected $ListOfServices,$UserVehicleService;
      */
     public function addUserVehicle(Request $request)
     {
-         $input = $request->except(['_token', 'proengsoft_jsvalidation']);
-       return $this->UserVehicleService->create($input );
-
+        $input = $request->except(['_token', 'proengsoft_jsvalidation']);
+        return $this->UserVehicleService->create($input);
     }
 
-         /**
+    /**
      * List user vehicle details
      *
      * @param  \Illuminate\Http\Request  $request
@@ -196,12 +190,11 @@ protected $ListOfServices,$UserVehicleService;
      */
     public function listUserVehicle(Request $request)
     {
-         $input = $request->except(['_token', 'proengsoft_jsvalidation']);
-       return $this->UserVehicleService->Listvehicle($input['user_id'] );
-
+        $input = $request->except(['_token', 'proengsoft_jsvalidation']);
+        return $this->UserVehicleService->Listvehicle($input['user_id']);
     }
 
-         /**
+    /**
      * List Product Categoey
      *
      * @param  \Illuminate\Http\Request  $request
@@ -215,7 +208,7 @@ protected $ListOfServices,$UserVehicleService;
 
 
 
-         /**
+    /**
      * List Product Categoey
      *
      * @param  \Illuminate\Http\Request  $request
@@ -229,7 +222,7 @@ protected $ListOfServices,$UserVehicleService;
 
 
 
-        /**
+    /**
      * List Product Categoey
      *
      * @param  \Illuminate\Http\Request  $request
@@ -237,22 +230,35 @@ protected $ListOfServices,$UserVehicleService;
      */
     public function ProductAdd(Request $request)
     {
-   $input = $request->except(['_token', 'proengsoft_jsvalidation']);
+        $input = $request->except(['_token', 'proengsoft_jsvalidation']);
 
-      $image = $request->file('product_image');
+        $image = $request->file('product_image');
         $filename = time() . $image->getClientOriginalName();
         $destinationPath = public_path('files/product');
         $image->move($destinationPath, $filename);
         $input['product_image'] = 'files/product' . "/" . $filename;
         $input['uploaded_by'] = 1;
-        
+
 
         return $this->ProductService->create($input);
+    }
+    /**
+     * List Product by Categoey
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function listProduct(Request $request)
+    {
+        $input = $request->except(['_token', 'proengsoft_jsvalidation']);
+
+
+        return $this->ProductService->where(['product_category'=> $input['product_category']]);
     }
 
 
 
-       /**
+    /**
      * Add Rating
      *
      * @param  \Illuminate\Http\Request  $request
@@ -265,7 +271,7 @@ protected $ListOfServices,$UserVehicleService;
     }
 
 
-      /**
+    /**
      * List Rating by adventure
      *
      * @param  \Illuminate\Http\Request  $request
@@ -279,7 +285,7 @@ protected $ListOfServices,$UserVehicleService;
 
 
 
-      /**
+    /**
      * Add Question
      *
      * @param  \Illuminate\Http\Request  $request
@@ -330,7 +336,7 @@ protected $ListOfServices,$UserVehicleService;
     }
 
 
-      /**
+    /**
      * Update User Profile
      *
      * @param  \Illuminate\Http\Request  $request
@@ -345,7 +351,7 @@ protected $ListOfServices,$UserVehicleService;
 
 
 
-      /**
+    /**
      * Update Push Notification
      *
      * @param  \Illuminate\Http\Request  $request
@@ -361,7 +367,7 @@ protected $ListOfServices,$UserVehicleService;
 
 
 
-     /**
+    /**
      * Update  Status
      *
      * @param  \Illuminate\Http\Request  $request
@@ -373,7 +379,7 @@ protected $ListOfServices,$UserVehicleService;
         return $this->apicommonService->updateStatus($request);
     }
 
-     /**
+    /**
      * Forget Password
      *
      * @param  \Illuminate\Http\Request  $request
@@ -385,7 +391,7 @@ protected $ListOfServices,$UserVehicleService;
         return $this->apiAuthService->forgetPassword($request);
     }
 
-/**
+    /**
      * Get All User Insert
      *
      * @return \Illuminate\Http\Response
@@ -395,7 +401,7 @@ protected $ListOfServices,$UserVehicleService;
         return $this->apiAuthService->allUserintrest($request);
     }
 
-/**
+    /**
      * Get Adventure By User Intrest
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -406,7 +412,7 @@ protected $ListOfServices,$UserVehicleService;
         return $this->apiAuthService->adventureByuserIntrest($request);
     }
 
- /**
+    /**
      * Adventure By ID
      *
      * @param  \Illuminate\Http\Request  $request
@@ -418,7 +424,7 @@ protected $ListOfServices,$UserVehicleService;
     }
 
 
-     /**
+    /**
      * Get Places By Id
      *
      * @param  \Illuminate\Http\Request  $request
@@ -432,7 +438,7 @@ protected $ListOfServices,$UserVehicleService;
 
 
 
-  /**
+    /**
      * Place By Adventure
      *
      * @param  \Illuminate\Http\Request  $request
@@ -454,7 +460,7 @@ protected $ListOfServices,$UserVehicleService;
         return $this->apicommonService->travel($request);
     }
 
-     /**
+    /**
      * User  Adventures
      *
      * @param  \Illuminate\Http\Request  $request
@@ -477,7 +483,7 @@ protected $ListOfServices,$UserVehicleService;
     }
 
 
-     /**
+    /**
      * Add Contact Us
      *
      * @param  \Illuminate\Http\Request  $request
@@ -503,15 +509,15 @@ protected $ListOfServices,$UserVehicleService;
 
 
 
-// --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------
 
-// User List
-public function UserList()
-{
-    return $this->apiAuthService->UserList();
-}
+    // User List
+    public function UserList()
+    {
+        return $this->apiAuthService->UserList();
+    }
 
-// Service Request Add And Delete And List Api
+    // Service Request Add And Delete And List Api
     //add
     public function servicesrequestapi(Request $request)
     {
@@ -538,29 +544,29 @@ public function UserList()
         return $this->apiAuthService->ServiceRequestBYEmpId($request);
     }
     //Update status
-    public function servicesrequeststatusupdate(Request $request,$id)
+    public function servicesrequeststatusupdate(Request $request, $id)
     {
 
-        return $this->apiAuthService->servicesrequeststatusupdate($request,$id);
+        return $this->apiAuthService->servicesrequeststatusupdate($request, $id);
     }
     //Update
-    public function servicesrequestupdate(Request $request,$id)
+    public function servicesrequestupdate(Request $request, $id)
     {
 
-        return $this->apiAuthService->servicesrequestupdate($request,$id);
+        return $this->apiAuthService->servicesrequestupdate($request, $id);
     }
 
 
-// Customer Feedback Add And Delete And List Api
+    // Customer Feedback Add And Delete And List Api
     //add
     public function reviewapi(ReviewRequest $request)
     {
         return $this->apiAuthService->ReviewRatingServices($request);
     }
     //update
-    public function customerfeedbackupdate(ReviewRequest $request,$id)
+    public function customerfeedbackupdate(ReviewRequest $request, $id)
     {
-        return $this->apiAuthService->customerfeedbackupdate($request,$id);
+        return $this->apiAuthService->customerfeedbackupdate($request, $id);
     }
     //list
     public function reviewapilist(Request $request)
@@ -569,13 +575,13 @@ public function UserList()
     }
 
 
-// steam house
+    // steam house
     //list
     public function steamhouseslist()
     {
         return $this->apiAuthService->steamhouseservicelist();
     }
-// Map Location
+    // Map Location
     //list
     public function locationslist()
     {
@@ -588,13 +594,13 @@ public function UserList()
     }
 
 
-       //list
-       public function managerCompany()
-       {
-           return $this->apiAuthService->livedata();
-       }
+    //list
+    public function managerCompany()
+    {
+        return $this->apiAuthService->livedata();
+    }
 
-// Company List
+    // Company List
     //list
     public function companylistsapilist(Request $request)
     {
@@ -606,7 +612,7 @@ public function UserList()
         return $this->apiAuthService->companylistsaddapi($request);
     }
 
-// Tracker Status
+    // Tracker Status
     //list
     public function trackingstatuslistapi(Request $request)
     {
@@ -618,12 +624,12 @@ public function UserList()
         return $this->apiAuthService->trackingstatusapi($request);
     }
     //add
-    public function trackingstatusupdate(Request $request,$id)
+    public function trackingstatusupdate(Request $request, $id)
     {
-        return $this->apiAuthService->trackingstatusupdate($request,$id);
+        return $this->apiAuthService->trackingstatusupdate($request, $id);
     }
 
-// Manager Feedback
+    // Manager Feedback
     //list
     public function managerfeedbackslistapi()
     {
@@ -635,11 +641,11 @@ public function UserList()
         return $this->apiAuthService->managerfeedbacksapi($request);
     }
     //update
-    public function managerfeedbackupdate(ManagerFeedbackRequest $request,$id)
+    public function managerfeedbackupdate(ManagerFeedbackRequest $request, $id)
     {
-        return $this->apiAuthService->managerfeedbackupdate($request,$id);
+        return $this->apiAuthService->managerfeedbackupdate($request, $id);
     }
-// Employee Feedback
+    // Employee Feedback
     //list
     public function employeefeedbacklistapi()
     {
@@ -648,15 +654,15 @@ public function UserList()
     //add
     public function employeefeedbackaddapi(EmployeeFeedbackRequest $request)
     {
-        return $this->apiAuthService->employeefeedbackaddapi( $request);
+        return $this->apiAuthService->employeefeedbackaddapi($request);
     }
     //update
-    public function employeefeedbackupdate(EmployeeFeedbackRequest $request,$id)
+    public function employeefeedbackupdate(EmployeeFeedbackRequest $request, $id)
     {
-        return $this->apiAuthService->employeefeedbackupdate($request,$id);
+        return $this->apiAuthService->employeefeedbackupdate($request, $id);
     }
 
-// Employee
+    // Employee
     //list
     public function employeeslistapi(Request $request)
     {
@@ -668,12 +674,12 @@ public function UserList()
         return $this->apiAuthService->employeesapi($request);
     }
     //update
-    public function employeeupdateapi(EmployeesRequest $request,$id)
+    public function employeeupdateapi(EmployeesRequest $request, $id)
     {
-        return $this->apiAuthService->employeeupdateapi($request,$id);
+        return $this->apiAuthService->employeeupdateapi($request, $id);
     }
 
-// Live Data (Customer Data)
+    // Live Data (Customer Data)
     //list
     public function customerdataslistapi()
     {
@@ -684,9 +690,8 @@ public function UserList()
     {
         return $this->apiAuthService->customerdatasapi($request);
     }
-    public function customerdatasupdate(Request $request,$id)
+    public function customerdatasupdate(Request $request, $id)
     {
-        return $this->apiAuthService->customerdatasupdate($request,$id);
+        return $this->apiAuthService->customerdatasupdate($request, $id);
     }
-
 }
