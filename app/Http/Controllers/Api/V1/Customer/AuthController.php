@@ -190,8 +190,10 @@ class AuthController extends Controller
      */
     public function listUserVehicle(Request $request)
     {
-        $input = $request->except(['_token', 'proengsoft_jsvalidation']);
-        return $this->UserVehicleService->Listvehicle($input['user_id']);
+         $user = auth()->user();
+         
+        // $input = $request->except(['_token', 'proengsoft_jsvalidation']);
+        return $this->UserVehicleService->Listvehicle( $user->id);
     }
 
     /**
@@ -251,7 +253,6 @@ class AuthController extends Controller
     public function listProduct(Request $request)
     {
         $input = $request->except(['_token', 'proengsoft_jsvalidation']);
-
 
         return $this->ProductService->where(['product_category'=> $input['product_category']]);
     }
@@ -489,10 +490,10 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function contactUs(ContactUsRequest $request)
-    {
-        return $this->apicommonService->contactUs($request);
-    }
+    // public function contactUs(ContactUsRequest $request)
+    // {
+    //     return $this->apicommonService->contactUs($request);
+    // }
 
 
     /**
@@ -624,10 +625,10 @@ class AuthController extends Controller
         return $this->apiAuthService->trackingstatusapi($request);
     }
     //add
-    public function trackingstatusupdate(Request $request, $id)
-    {
-        return $this->apiAuthService->trackingstatusupdate($request, $id);
-    }
+    // public function trackingstatusupdate(Request $request, $id)
+    // {
+    //     return $this->apiAuthService->trackingstatusupdate($request, $id);
+    // }
 
     // Manager Feedback
     //list
@@ -674,10 +675,10 @@ class AuthController extends Controller
         return $this->apiAuthService->employeesapi($request);
     }
     //update
-    public function employeeupdateapi(EmployeesRequest $request, $id)
-    {
-        return $this->apiAuthService->employeeupdateapi($request, $id);
-    }
+    // public function employeeupdateapi(EmployeesRequest $request, $id)
+    // {
+    //     return $this->apiAuthService->employeeupdateapi($request, $id);
+    // }
 
     // Live Data (Customer Data)
     //list

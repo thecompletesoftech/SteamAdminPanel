@@ -86,6 +86,12 @@ class FuelTypeController extends Controller
            
         $input = $request->except(['_token', 'proengsoft_jsvalidation']);
         
+        $image = $request->file('fuel_image');
+        $filename = time() . $image->getClientOriginalName();
+        $destinationPath = public_path($this->uploads_image_directory);
+        $image->move($destinationPath, $filename);
+        $input['fuel_image'] = $this->uploads_image_directory . "/" . $filename;
+
         $battle = $this->service->create($input);
         return redirect()->route($this->index_route_name)->with('success',
         $this->mls->messageLanguage('created', 'Services Has Been Added', 1));
@@ -109,6 +115,12 @@ class FuelTypeController extends Controller
     public function update(Request $request,  $location)
     {
         $input = $request->except(['_method', '_token', 'proengsoft_jsvalidation']);
+
+        $image = $request->file('fuel_image');
+        $filename = time() . $image->getClientOriginalName();
+        $destinationPath = public_path($this->uploads_image_directory);
+        $image->move($destinationPath, $filename);
+        $input['fuel_image'] = $this->uploads_image_directory . "/" . $filename;
 
 
         $this->service->updateById($input,$location);

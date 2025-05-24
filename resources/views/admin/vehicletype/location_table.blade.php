@@ -10,6 +10,7 @@
   <tr>
     <th>ID No.</th>
     <th>Vehicle Types</th>
+    <th>Image</th>
     
     <th>ACTION</th>
   </tr>
@@ -20,6 +21,7 @@
 
     <td>{{$i++ }}</td>
     <td>{{$user->vehicle_type }}</td>
+    <td> <img src="{{ url('/') }}/{{$user->type_image }}" height="50"/></td>
     <td>
         <a href="{{ url('/') }}/admin/vehicletype/edit/{{$user->id}}" title="Edit" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" >
                     <span class="svg-icon svg-icon-3">

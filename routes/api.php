@@ -35,8 +35,7 @@ Route::group(['middleware' => ['optimizeImages'], 'prefix' => '/v1/customer', 'n
         // Route::post('UserList', 'UserList');
         // Route::post('userUpdate/{id}', 'userUpdate');
         // Route::post('allUserintrest', 'allUserintrest');
-        Route::post('sendOtp', 'sendOtp');
-        Route::post('verifyOtp', 'verifyOtp');
+     
         Route::post('contactUs', 'contactUs');
         Route::post('forgetPassword', 'forgetPassword');
        
@@ -77,7 +76,8 @@ Route::group(['middleware' => ['optimizeImages'], 'prefix' => '/v1/customer', 'n
         Route::controller(AuthController::class)->group(function () {
 
 
-
+   Route::post('sendOtp', 'sendOtp');
+        Route::post('verifyOtp', 'verifyOtp');
 
  //list all vehicle type like car bike
         Route::post('VehicleType', 'VehicleType');

@@ -35,8 +35,8 @@ class AuthService
      */
     public static function login(Request $request)
     {
-
-        $user = User::where('phone', $request->phone)
+        $whe=['phone'=>$request->phone,"role"=>$request->role];
+        $user = User::where($whe)
             ->first();
 
 
@@ -49,7 +49,7 @@ class AuthService
                         'message' => 'Oops!, You have provide incorrect credentials.',
                         'type' => 'unauthorized',
                     ],
-                    200
+                    201
                 );
             
         }
@@ -57,10 +57,12 @@ class AuthService
         if ($user->status == 0) {
             // UserService::updateLastLogin($user->id, $request);
             if (!empty($request->fcm_token)) {
-                $data = array('fcm_token' => $request->fcm_token);
+                $data = array('fcm_token' => $request->deviceToken,'deviceType' => $request->deviceType,
+            'latitude' => $request->latitude,
+        'longitude' => $request->longitude);
                 $result = DB::table('users')->where('phone', $request->phone)->update($data);
             }
-
+ $token = auth('api')->login($user, ['exp' => Carbon::now()->addDays(120)->timestamp]);
             // Artisan::call('livedata:update');
             return response()->json(
                 [
@@ -79,7 +81,7 @@ class AuthService
                     'message' => 'Your Account is Blocked or Unverify Please Connect with Support!',
                     'type' => 'blocked',
                 ],
-                200
+                202
             );
         }
     }
@@ -116,6 +118,7 @@ class AuthService
                     'latitude' => $request->latitude,
                     'longitude' => $request->longitude,
                     'role' => $request->role,
+                    'deviceType' => $request->deviceType,
                 ]
             );
             $user = UserService::create($input);
@@ -127,7 +130,7 @@ class AuthService
                         'message' => 'unauthorized',
                         'type' => 'unauthorized',
                     ],
-                    200
+                    201
                 );
             }
 
@@ -151,7 +154,7 @@ class AuthService
                         'message' => 'Deactive user',
                         'type' => 'unauthorized',
                     ],
-                    200
+                    201
                 );
             }
         }
@@ -305,7 +308,7 @@ class AuthService
                     'message' => 'Incorrect Phone Number',
                     'type' => 'unauthorized',
                 ],
-                200
+                201
             );
 
         }
@@ -313,108 +316,39 @@ class AuthService
 
 
 
-/**
- * Verify Otp
- *
- * @param  \Illuminate\Http\Request  $request
- * @return \Illuminate\Http\Response
- */
+
+
+    /**
+     * Verify Otp
+     *
+     * @param  \Illuminate\Http\Request  $request 
+     * @return \Illuminate\Http\Response
+     */
     public static function verifyOtp(Request $request)
     {
-
-        $request->validate([
-            'otp' => 'required',
-            'phone' => 'required',
-
-        ]);
-
-        $user = ServiceRequestModel::where('id', $request->service_request_id)->first();
-        if ($user) {
-
-            $data = ServiceRequestModel::where('id', $request->service_request_id)
-                ->where('phone', $user->phone)
+        try {
+            $data = MasterOtp::where('phone', $request->phone)
                 ->where('otp', $request->otp)
                 ->orderBy('created_at', 'desc')
+                
                 ->first();
-            if (!empty($data)) {
 
-                $old_track =
-                    [
-                    'status' => "2",
-                ];
-                $trackingold = TrackingModel::where('Service_request_id', $request->service_request_id)->where('text', 'Engineer Check-In')->update($old_track);
+            if ($data) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Otp Verify Successfully',
 
-                $track =
-                    [
-                    'Service_request_id' => $request->service_request_id,
-                    'text' => "Service in process",
-                    'status' => 1,
-                ];
-                $tracking = TrackingModel::create($track);
-
-                $resolved =
-                    [
-                    'Service_request_id' => $request->service_request_id,
-                    'text' => "Resolved By Engineer",
-                    'status' => 1,
-                ];
-                $trackingday = TrackingModel::create($resolved);
-                // $service_request=TrackingModel::where('text',$track['text'])->get();
-                // if(count($service_request)>0){
-                // }else{
-                //     $tracking = TrackingModel::create($track);
-                // }
-                $input = [];
-                $input =
-                    [
-                    // 'Service_request_id' =>$request->service_request_id,
-                    'status' => 2,
-                ];
-                $tracking = ServiceRequestModel::where('id', $request->service_request_id)->update($input);
-
-                $service = ServiceRequestModel::where('id', $request->service_request_id)->first();
-
-                if ($user) {
-
-                    return response()->json(
-                        [
-                            'status' => true,
-                            'message' => 'Verification successfully',
-                            'data' => $service,
-                        ],
-                        200
-                    );
-                } else {
-
-                    return response()->json(
-                        [
-                            'status' => false,
-                            'message' => 'Deactive user',
-                            'type' => 'unauthorized',
-                        ],
-                        200
-                    );
-
-                }
+                ], 200);
             } else {
                 return response()->json([
                     'status' => false,
                     'message' => 'Wrong OTP',
-                    'errors' => ['otp' => ['Wrong OTP']],
-                ], 200);
+                    'errors' => ['otp' => ['Wrong OTP']]
+                ], 201);
             }
-        } else {
-            return response()->json(
-                [
-                    'status' => false,
-                    'message' => 'Unauthorized User',
-                    'type' => 'unauthorized',
-                ],
-                200
-            );
-
+        } catch (Exception $e) {
+            return $e;
         }
-
     }
 
     /**

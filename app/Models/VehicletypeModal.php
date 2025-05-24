@@ -15,6 +15,7 @@ class VehicletypeModal extends Model
     protected $fillable =
     [
        'vehicle_type',
+       'type_image',
        
     ];
 }

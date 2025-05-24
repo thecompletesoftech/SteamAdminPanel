@@ -15,8 +15,6 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->integer('meter_id')->nullable();
-            $table->integer('manager_id')->nullable();
             $table->string('username', 150);
             $table->string('name', 150);
             $table->string('email', 200);
@@ -32,7 +30,7 @@ return new class extends Migration
             $table->string('c_password')->nullable();
             $table->string('c_address')->nullable();
             $table->tinyInteger('status')->default(0)->comment('0:block, 1:unblock');
-            $table->integer('role')->default(0)->comment('0:user, 1:manager, 2:employee');
+            $table->integer('role')->default(0)->comment('0:user, 1:vendor, ');
             $table->string('fcm_token', 200)->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

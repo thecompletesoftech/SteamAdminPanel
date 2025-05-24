@@ -44,6 +44,7 @@ class User extends Authenticatable implements JWTSubject
         'c_address',
         'mobile_verify',
         'online_status',
+        'deviceType'
 
     ];
 

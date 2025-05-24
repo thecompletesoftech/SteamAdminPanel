@@ -11,6 +11,11 @@
                 {!! Form::text('vehicle_type', null, ['min' => 2, 'max' => 6, 'value' => 2, 'class' => 'form-control form-control-lg form-control-solid', 'placeholder' =>'Category Name']) !!}
         </div>
 
+        <label class="col-lg-2 col-form-label mt-2 required fw-bold fs-6">{{ trans_choice('content.pictures', 1) }}</label>
+        <div class="col-lg-4 fv-row">
+                {!! Form::file('type_image', null, ['min' => 2, 'max' => 6, 'value' => 2, 'class' => ' mt-2 form-control form-control-lg form-control-solid', 'placeholder' => trans_choice('content.pictures', 1)]) !!}
+        </div>
+
 
 
 

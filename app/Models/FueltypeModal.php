@@ -15,6 +15,7 @@ class FueltypeModal extends Model
     protected $fillable =
     [
        'fuel_type',
+       'fuel_image',
        
     ];
 }

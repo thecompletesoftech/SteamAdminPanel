@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('fuel_type', function (Blueprint $table) {
             $table->id();
                 $table->string('fuel_type');
+                $table->string('fuel_image');
             $table->string('deleted_at')->nullable();
            
             $table->timestamps();
